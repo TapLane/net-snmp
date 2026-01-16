@@ -8,6 +8,13 @@ jobs:
     permissions:
       contents: write
     steps:
+      - name: Checkout net-snmp
+        uses: actions/checkout@v4
+        with:
+          repository: TapLane/net-snmp
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+          
       - name: Install packages
         run: sudo apt-get update && sudo apt-get install -y python3-dev perl libperl-dev
 
