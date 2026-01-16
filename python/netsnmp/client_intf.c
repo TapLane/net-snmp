@@ -2204,7 +2204,68 @@ netsnmp_set(PyObject *self, PyObject *args)
 	    }
 	  }
 	} else {
+    /* MODIFIED: Auto-detect raw hex string (e.g. "c0", "AABB") for OCTETSTR */
+    int is_hex_string = 0;
+
+    /* Only attempt hex conversion for OCTETSTR or OPAQUE */
+    if (val && (type == TYPE_OCTETSTR || type == TYPE_OPAQUE)) {
+        /* * Logic: 
+        * 1. Length must be even (e.g., "c0" is 2, "c" is 1).
+        * 2. Length must be > 0.
+        * 3. All characters must be valid hex digits (0-9, a-f, A-F).
+        */
+        if (tmplen > 0 && tmplen % 2 == 0) {
+            size_t k;
+            is_hex_string = 1; /* Assume yes, check for non-hex chars */
+            for (k = 0; k < tmplen; k++) {
+                if (!isxdigit((unsigned char)val[k])) {
+                    is_hex_string = 0;
+                    break;
+                }
+            }
+        }
+    }
+
+    if (is_hex_string) {
+        size_t bin_len = tmplen / 2;
+        tmp_val_str = (char *)malloc(bin_len);
+        
+        if (tmp_val_str) {
+            size_t i;
+            unsigned int byte_val;
+            int conv_success = 1;
+            
+            /* Parse pairs of hex digits starting from index 0 */
+            for (i = 0; i < bin_len; i++) {
+                /* Notice: val + (i*2), NO "+ 2" offset here anymore */
+                if (sscanf(val + (i * 2), "%2x", &byte_val) == 1) {
+                    tmp_val_str[i] = (char)byte_val;
+                } else {
+                    conv_success = 0;
+                    break;
+                }
+            }
+
+            if (conv_success) {
+                /* Update the length to the new binary length */
+                tmplen = (Py_ssize_t)bin_len;
+            } else {
+                /* Failed parsing, fallback to sending raw string */
+                free(tmp_val_str);
+                tmp_val_str = netsnmp_memdup(val, tmplen);
+            }
+        } else {
+            /* Malloc failed, fallback */
             tmp_val_str = netsnmp_memdup(val, tmplen);
+        }
+    } else {
+        /* * Fallback: 
+        * 1. Not OCTETSTR/OPAQUE 
+        * 2. Odd length (e.g. "abc")
+        * 3. Contains non-hex chars (e.g. "hello")
+        */
+        tmp_val_str = netsnmp_memdup(val, tmplen);
+    }
         }
 	len = (int)tmplen;
 	status = __add_var_val_str(pdu, oid_arr, oid_arr_len, tmp_val_str, len,

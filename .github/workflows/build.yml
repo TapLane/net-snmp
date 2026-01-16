@@ -1,0 +1,37 @@
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-commit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.BOT_PAT }}
+
+      - name: Install packages
+        run: sudo apt-get update && sudo apt-get install -y python3-dev perl libperl-dev
+
+      - name: Configure net-snmp with Python modules support
+        run: ./configure --with-defaults --with-python-modules --libdir=/usr/lib --enable-shared --enable-blumenthal-aes
+
+      - name: Build and Install to local folder
+        run: |
+          make -j$(nproc)
+          make DESTDIR=$(pwd)/.dist install
+
+      - name: Commit and push .dist
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add .dist/
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore([skip ci]): Build and commit .dist artifacts"
+            git push
+          fi
