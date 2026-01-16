@@ -35,7 +35,8 @@ jobs:
             autoconf \
             automake \
             python3-dev \
-            linux-headers
+            linux-headers \
+            git
 
       - name: Configure net-snmp with Python modules support
         run: ./configure --with-defaults --with-python-modules --libdir=/usr/lib --enable-shared --enable-blumenthal-aes
