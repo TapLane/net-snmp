@@ -18,7 +18,17 @@ jobs:
           fetch-depth: 0
           
       - name: Install Alpine Build Tools
-        run: apk add --no-cache build-base perl-dev openssl-dev python3-dev
+        run: |
+          apk update
+          apk add --no-cache \
+            build-base \
+            perl-dev \
+            openssl-dev \
+            python3-dev \
+            linux-headers \
+            autoconf \
+            automake \
+            libtool
 
       - name: Configure net-snmp with Python modules support
         run: ./configure --with-defaults --with-python-modules --libdir=/usr/lib --enable-shared --enable-blumenthal-aes
