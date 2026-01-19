@@ -10,6 +10,9 @@ jobs:
     permissions:
       contents: write
     steps:
+      - name: Install Git
+        run: apk add --no-cache git
+
       - name: Checkout net-snmp
         uses: actions/checkout@v4
         with:
@@ -35,8 +38,7 @@ jobs:
             autoconf \
             automake \
             python3-dev \
-            linux-headers \
-            git
+            linux-headers
 
       - name: Configure net-snmp with Python modules support
         run: ./configure --with-defaults --with-python-modules --libdir=/usr/lib --enable-shared --enable-blumenthal-aes
@@ -48,6 +50,7 @@ jobs:
 
       - name: Commit and push .dist
         run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
           git add .dist/
