@@ -5,17 +5,11 @@ on:
 jobs:
   build-and-commit:
     runs-on: ubuntu-latest
+    container: alpine:latest
     permissions:
       contents: write
     steps:
-      - name: Set up Alpine Linux (e.g., v3.19)
-        uses: jirutka/setup-alpine@v1
-        with:
-          branch: v3.19
-          packages: sudo git
-
       - name: Install Git
-        shell: alpine.sh {0}
         run: apk add --no-cache git
 
       - name: Checkout net-snmp
@@ -26,7 +20,6 @@ jobs:
           fetch-depth: 0
           
       - name: Install Alpine Build Tools
-        shell: alpine.sh {0}
         run: |
           apk update
           apk add --no-cache \
@@ -47,17 +40,14 @@ jobs:
             linux-headers
 
       - name: Configure net-snmp with Python modules support
-        shell: alpine.sh {0}
         run: ./configure --with-defaults --with-python-modules --libdir=/usr/lib --enable-shared --enable-blumenthal-aes
 
       - name: Build and Install to local folder
-        shell: alpine.sh {0}
         run: |
           make -j$(nproc)
           make DESTDIR=$(pwd)/.dist install
 
       - name: Commit and push .dist
-        shell: alpine.sh {0}
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
