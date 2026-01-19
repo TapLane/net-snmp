@@ -12,10 +12,11 @@ jobs:
         uses: jirutka/setup-alpine@v1
         with:
           branch: v3.19
+          packages: sudo git
 
       - name: Install Git
         shell: alpine.sh {0}
-        run: sudo apk add --no-cache git
+        run: apk add --no-cache git
 
       - name: Checkout net-snmp
         uses: actions/checkout@v4
@@ -27,8 +28,8 @@ jobs:
       - name: Install Alpine Build Tools
         shell: alpine.sh {0}
         run: |
-          sudo apk update
-          sudo apk add --no-cache \
+          apk update
+          apk add --no-cache \
             build-base \
             perl \
             perl-dev \
