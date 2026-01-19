@@ -29,9 +29,10 @@ jobs:
               python3-dev py3-setuptools linux-headers autoconf automake libtool
             
             cd /work
-            ./configure --with-defaults --with-python-modules --enable-shared
+            ./configure --with-python-modules --libdir=/usr/lib --enable-shared --enable-blumenthal-aes
             make -j$(nproc)
             make DESTDIR=$(pwd)/.dist install
+            python3 python/setup.py install --root=$(pwd)/.dist --prefix=/usr/local
 
       - name: Commit and Push
         run: |
