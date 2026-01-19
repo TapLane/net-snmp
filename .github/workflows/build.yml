@@ -32,7 +32,8 @@ jobs:
             ./configure --with-python-modules --libdir=/usr/lib --enable-shared --enable-blumenthal-aes
             make -j$(nproc)
             make DESTDIR=$(pwd)/.dist install
-            python3 python/setup.py install --root=$(pwd)/.dist --prefix=/usr/local
+            cd python
+            python3 setup.py install --root=$(pwd)/../.dist --prefix=/usr/local
 
       - name: Commit and Push
         run: |
