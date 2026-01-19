@@ -5,11 +5,14 @@ on:
 jobs:
   build-and-commit:
     runs-on: ubuntu-latest
-    container:
-      image: alpine:latest
     permissions:
       contents: write
     steps:
+      - name: Set up Alpine Linux (e.g., v3.19)
+        uses: jirutka/setup-alpine@v1
+        with:
+          branch: v3.19
+
       - name: Install Git
         run: apk add --no-cache git
 
