@@ -1,7 +1,0 @@
-Metadata-Version: 2.1
-Name: netsnmp-python
-Version: 1.0a1
-Summary: The Net-SNMP Python Interface
-Author-email: "G. S. Marzot" <giovanni.marzot@sparta.com>
-Project-URL: Homepage, http://www.net-snmp.org
-License-File: LICENSE
