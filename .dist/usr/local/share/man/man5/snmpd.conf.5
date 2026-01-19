@@ -677,7 +677,7 @@ This requires that the agent was built with support for the
 \fIucd\-snmp/proc\fR module (which is included as part of the
 default build configuration).
 .IP "proc NAME [MAX [MIN]]"
-monitors the number of processes called NAME (as reported by "/usr/bin/ps -e")
+monitors the number of processes called NAME (as reported by "/bin/ps -acx")
 running on the local system.
 .IP
 If the number of NAMEd processes is less than MIN or greater than MAX,

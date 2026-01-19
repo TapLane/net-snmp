@@ -134,7 +134,7 @@
 /* #undef HAVE_CRT_EXTERNS_H */
 
 /* Define to 1 if you have the <curses.h> header file. */
-#define HAVE_CURSES_H 1
+/* #undef HAVE_CURSES_H */
 
 /* Define to 1 if you have the declaration of `daylight', and to 0 if you
    don't. */
@@ -173,7 +173,7 @@
 #define HAVE_DLOPEN 1
 
 /* Set if the dpkg-query command is available */
-#define HAVE_DPKG_QUERY 1
+/* #undef HAVE_DPKG_QUERY */
 
 /* Define to 1 if you have the `DTLSv1_method' function. */
 #define HAVE_DTLSV1_METHOD 1
@@ -182,10 +182,10 @@
 #define HAVE_DTLS_METHOD 1
 
 /* Define to 1 if you have the `endfsent' function. */
-#define HAVE_ENDFSENT 1
+/* #undef HAVE_ENDFSENT */
 
 /* Define to 1 if you have the `endnetgrent' function. */
-#define HAVE_ENDNETGRENT 1
+/* #undef HAVE_ENDNETGRENT */
 
 /* Define to 1 if you have the `ERR_get_error_all' function. */
 #define HAVE_ERR_GET_ERROR_ALL 1
@@ -245,7 +245,7 @@
 /* #undef HAVE_FORKALL */
 
 /* Define to 1 if you have the <fstab.h> header file. */
-#define HAVE_FSTAB_H 1
+/* #undef HAVE_FSTAB_H */
 
 /* Define to 1 if you have the `fsync' function. */
 #define HAVE_FSYNC 1
@@ -266,7 +266,7 @@
 #define HAVE_GETDTABLESIZE 1
 
 /* Define to 1 if you have the `getfsent' function. */
-#define HAVE_GETFSENT 1
+/* #undef HAVE_GETFSENT */
 
 /* Define to 1 if you have the `getfsstat' function. */
 /* #undef HAVE_GETFSSTAT */
@@ -302,7 +302,7 @@
 /* #undef HAVE_GETMNTINFO */
 
 /* Define to 1 if you have the `getnetgrent' function. */
-#define HAVE_GETNETGRENT 1
+/* #undef HAVE_GETNETGRENT */
 
 /* Define to 1 if you have the `getopt' function. */
 #define HAVE_GETOPT 1
@@ -531,7 +531,7 @@
 #define HAVE_LRAND48 1
 
 /* Define to 1 if you have the `lseek64' function. */
-#define HAVE_LSEEK64 1
+/* #undef HAVE_LSEEK64 */
 
 /* Define to 1 if you have the <machine/param.h> header file. */
 /* #undef HAVE_MACHINE_PARAM_H */
@@ -549,7 +549,7 @@
 #define HAVE_MALLOC_H 1
 
 /* Define to 1 if you have the `malloc_trim' function. */
-#define HAVE_MALLOC_TRIM 1
+/* #undef HAVE_MALLOC_TRIM */
 
 /* Define to 1 if the system has the type `mib2_ipIfStatsEntry_t'. */
 /* #undef HAVE_MIB2_IPIFSTATSENTRY_T */
@@ -678,7 +678,7 @@
 /* #undef HAVE_NETINET_UDP_VAR_H */
 
 /* Define to 1 if you have the <netipx/ipx.h> header file. */
-#define HAVE_NETIPX_IPX_H 1
+/* #undef HAVE_NETIPX_IPX_H */
 
 /* Define to 1 if you have the <netlink/cache.h> header file. */
 /* #undef HAVE_NETLINK_CACHE_H */
@@ -732,7 +732,7 @@
 /* #undef HAVE_NLIST_H */
 
 /* Define to 1 if the system has the type `off64_t'. */
-#define HAVE_OFF64_T 1
+/* #undef HAVE_OFF64_T */
 
 /* Define to 1 if you have the `opendir' function. */
 #define HAVE_OPENDIR 1
@@ -801,7 +801,7 @@
 /* #undef HAVE_PCI_PCI_H */
 
 /* Define to 1 if you have <pcre2.h>. */
-#define HAVE_PCRE2_H 1
+/* #undef HAVE_PCRE2_H */
 
 /* Define to 1 if you have <pcre.h>. */
 /* #undef HAVE_PCRE_H */
@@ -837,7 +837,7 @@
 #define HAVE_POSIX_SPAWN 1
 
 /* Define to 1 if you have the `pread64' function. */
-#define HAVE_PREAD64 1
+/* #undef HAVE_PREAD64 */
 
 /* Set if /etc/printcap exists */
 /* #undef HAVE_PRINTCAP */
@@ -900,7 +900,7 @@
 #define HAVE_SETENV 1
 
 /* Define to 1 if you have the `setfsent' function. */
-#define HAVE_SETFSENT 1
+/* #undef HAVE_SETFSENT */
 
 /* Define to 1 if you have the `setgid' function. */
 #define HAVE_SETGID 1
@@ -918,7 +918,7 @@
 #define HAVE_SETMNTENT 1
 
 /* Define to 1 if you have the `setnetgrent' function. */
-#define HAVE_SETNETGRENT 1
+/* #undef HAVE_SETNETGRENT */
 
 /* Define to 1 if you have the `setsid' function. */
 #define HAVE_SETSID 1
@@ -927,7 +927,7 @@
 #define HAVE_SETUID 1
 
 /* Define to 1 if you have the <sgtty.h> header file. */
-#define HAVE_SGTTY_H 1
+/* #undef HAVE_SGTTY_H */
 
 /* Define to 1 if you have the `sigaction' function. */
 #define HAVE_SIGACTION 1
@@ -936,7 +936,7 @@
 /* #undef HAVE_SIGALRM */
 
 /* Define to 1 if you have the `sigblock' function. */
-#define HAVE_SIGBLOCK 1
+/* #undef HAVE_SIGBLOCK */
 
 /* Define if SIGHUP is defined in <signal.h>. */
 #define HAVE_SIGHUP 1
@@ -1005,7 +1005,7 @@
 #define HAVE_STDLIB_H 1
 
 /* Define to 1 if you have the `stime' function. */
-/* #undef HAVE_STIME */
+#define HAVE_STIME 1
 
 /* Define to 1 if you have the `strcasestr' function. */
 #define HAVE_STRCASESTR 1
@@ -1276,7 +1276,7 @@
 /* #undef HAVE_SYS_CALLOUT_H */
 
 /* Define to 1 if you have the <sys/cdefs.h> header file. */
-#define HAVE_SYS_CDEFS_H 1
+/* #undef HAVE_SYS_CDEFS_H */
 
 /* Define to 1 if you have the <sys/conf.h> header file. */
 /* #undef HAVE_SYS_CONF_H */
@@ -1351,7 +1351,7 @@
 /* #undef HAVE_SYS_PSTAT_H */
 
 /* Define to 1 if you have the <sys/queue.h> header file. */
-#define HAVE_SYS_QUEUE_H 1
+/* #undef HAVE_SYS_QUEUE_H */
 
 /* Define to 1 if you have the <sys/select.h> header file. */
 #define HAVE_SYS_SELECT_H 1
@@ -1360,7 +1360,7 @@
 /* #undef HAVE_SYS_SEMA_H */
 
 /* Define to 1 if you have the <sys/socketvar.h> header file. */
-#define HAVE_SYS_SOCKETVAR_H 1
+/* #undef HAVE_SYS_SOCKETVAR_H */
 
 /* Define to 1 if you have the <sys/socket.h> header file. */
 #define HAVE_SYS_SOCKET_H 1
@@ -1693,7 +1693,7 @@
 /* #undef NETSNMP_ENABLE_TESTING_CODE */
 
 /* Type of fd_set::fds_bits */
-#define NETSNMP_FD_MASK_TYPE __fd_mask
+#define NETSNMP_FD_MASK_TYPE long
 
 /* if defined always use default auth/priv protocol when creating usmUsers */
 /* #undef NETSNMP_FORCE_SYSTEM_V3_AUTHPRIV */
@@ -1812,7 +1812,7 @@
 
 /* Command to generate ps output, the final column must be the process name
    withOUT arguments */
-#define PSCMD "/usr/bin/ps -e"
+#define PSCMD "/bin/ps -acx"
 
 /* Define as the return type of signal handlers (`int' or `void'). */
 #define RETSIGTYPE void
@@ -1828,7 +1828,7 @@
 #define SECOND_APPVERIFY_COOKIE_CB_ARG_QUALIFIER const
 
 /* Define if the setnetgrent() return type is 'int' */
-#define SETNETGRENT_RETURNS_INT 1
+/* #undef SETNETGRENT_RETURNS_INT */
 
 /* The size of `sockaddr_un.sun_path', as computed by sizeof. */
 #define SIZEOF_SOCKADDR_UN_SUN_PATH 108
@@ -1854,7 +1854,7 @@
 #define TIME_WITH_SYS_TIME 1
 
 /* Where is the uname command */
-#define UNAMEPROG "/usr/bin/uname"
+#define UNAMEPROG "/bin/uname"
 
 /* Define for Solaris 2.5.1 so the uint32_t typedef from <sys/synch.h>,
    <pthread.h>, or <semaphore.h> is not used. If the typedef were allowed, the
