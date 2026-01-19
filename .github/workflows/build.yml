@@ -15,7 +15,7 @@ jobs:
 
       - name: Install Git
         shell: alpine.sh {0}
-        run: apk add --no-cache git
+        run: sudo apk add --no-cache git
 
       - name: Checkout net-snmp
         uses: actions/checkout@v4
