@@ -5,59 +5,45 @@ on:
 jobs:
   build-and-commit:
     runs-on: ubuntu-latest
-    container:
-      image: alpine:latest
-      options: --platform linux/arm64
     permissions:
       contents: write
     steps:
-      - name: Install Git
-        run: apk add --no-cache git
-
       - name: Checkout net-snmp
         uses: actions/checkout@v4
         with:
-          repository: TapLane/net-snmp
-          token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
-          
-      - name: Install Alpine Build Tools
-        run: |
-          apk update
-          apk add --no-cache \
-            build-base \
-            perl \
-            perl-dev \
-            py3-setuptools \
-            openssh \
-            openssl-dev \
-            libffi-dev \
-            nmap \
-            nmap-scripts \
-            wget \
-            libc-utils \
-            autoconf \
-            automake \
-            python3-dev \
-            linux-headers
+          token: ${{ secrets.BOT_PAT }}
 
-      - name: Configure net-snmp with Python modules support
-        run: ./configure --with-defaults --with-python-modules --libdir=/usr/lib --enable-shared --enable-blumenthal-aes
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
 
-      - name: Build and Install to local folder
-        run: |
-          make -j$(nproc)
-          make DESTDIR=$(pwd)/.dist install
+      - name: Build in Alpine ARM64
+        uses: addnab/docker-run-action@v3
+        with:
+          image: alpine:3.19
+          options: --platform linux/arm64 -v ${{ github.workspace }}:/work
+          run: |
+            apk update
+            apk add --no-cache git build-base perl-dev openssl-dev \
+              python3-dev py3-setuptools linux-headers autoconf automake libtool
+            
+            cd /work
+            ./configure --with-defaults --with-python-modules --enable-shared
+            make -j$(nproc)
+            make DESTDIR=$(pwd)/.dist install
 
-      - name: Commit and push .dist
+      - name: Commit and Push
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
-          git add .dist/
+          
+          # Force add .dist in case it's ignored
+          git add -f .dist/
+          
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "chore([skip ci]): Build and commit .dist artifacts"
-            git push
+            git commit -m "chore: build arm64 alpine binaries [skip ci]"
+            git push origin master
           fi
