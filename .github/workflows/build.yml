@@ -79,7 +79,7 @@ jobs:
 
       - name: Extract and Organize
         run: |
-          mkdir -p .dist/amd64 .dist/arm64
+          mkdir -p .dist/amd64
           
           AMD_TAR=$(find .temp_artifacts -name "net-snmp-amd64.tar")
           
@@ -92,7 +92,7 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
           
-          # This adds both .dist/amd64 and .dist/arm64
+          # This adds both .dist/amd64
           git add -f .dist/
           
           if git diff --cached --quiet; then
