@@ -45,9 +45,40 @@ jobs:
             cd /work
             ./configure --with-python-modules --libdir=/usr/lib --enable-shared --enable-blumenthal-aes
             make -j$(nproc)
-            make DESTDIR=$(pwd)/.dist install
+            make DESTDIR=$(pwd)/.dist/arm64 install
             cd python
-            python3 setup.py install --root=$(pwd)/../.dist --prefix=/usr/local
+            python3 setup.py install --root=$(pwd)/../.dist/arm64 --prefix=/usr/local
+
+      - name: Build in Alpine AMD64
+        uses: addnab/docker-run-action@v3
+        with:
+          image: node:24.3.0-alpine
+          options: --platform linux/amd64 -v ${{ github.workspace }}:/work
+          run: |
+            apk update
+            apk add --no-cache \
+              build-base \
+              perl \
+              perl-dev \
+              py3-setuptools \
+              openssh \
+              openssl-dev \
+              libffi-dev \
+              nmap \
+              nmap-scripts \
+              wget \
+              libc-utils \
+              autoconf \
+              automake \
+              python3-dev \
+              linux-headers
+              
+            cd /work
+            ./configure --with-python-modules --libdir=/usr/lib --enable-shared --enable-blumenthal-aes
+            make -j$(nproc)
+            make DESTDIR=$(pwd)/.dist/amd64 install
+            cd python
+            python3 setup.py install --root=$(pwd)/../.dist/amd64 --prefix=/usr/local
 
       - name: Commit and Push
         run: |
