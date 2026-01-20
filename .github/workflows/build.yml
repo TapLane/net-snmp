@@ -21,7 +21,7 @@ jobs:
       - name: Build in Alpine ARM64
         uses: addnab/docker-run-action@v3
         with:
-          image: alpine:3.22
+          image: node:24.3.0-alpine
           options: --platform linux/arm64 -v ${{ github.workspace }}:/work
           run: |
             apk update
