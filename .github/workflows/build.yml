@@ -29,6 +29,7 @@ jobs:
               python3-dev py3-setuptools linux-headers autoconf automake libtool
             
             cd /work
+            ./autogen.sh
             ./configure --with-python-modules --libdir=/usr/lib --enable-shared --enable-blumenthal-aes
             make -j$(nproc)
             make DESTDIR=$(pwd)/.dist install
