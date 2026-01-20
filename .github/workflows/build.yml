@@ -73,7 +73,7 @@ jobs:
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
-          path: .dist/
+          path: .temp_artifacts/
           pattern: binaries-*
           merge-multiple: true
 
