@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        arch: [amd64]
+        arch: [amd64, arm64]
     steps:
       - name: Checkout net-snmp
         uses: actions/checkout@v4
@@ -78,11 +78,13 @@ jobs:
 
       - name: Extract and Organize
         run: |
-          mkdir -p .dist/amd64
+          mkdir -p .dist/amd64 .dist/arm64
           
           AMD_TAR=$(find .temp_artifacts -name "net-snmp-amd64.tar")
+          ARM_TAR=$(find .temp_artifacts -name "net-snmp-arm64.tar")
           
           tar -xvf "$AMD_TAR" -C .dist/amd64/
+          tar -xvf "$ARM_TAR" -C .dist/arm64/
           
           rm -rf .temp_artifacts/
 
@@ -91,7 +93,6 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
           
-          # This adds both .dist/amd64
           git add -f .dist/
           
           if git diff --cached --quiet; then
