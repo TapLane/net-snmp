@@ -26,27 +26,40 @@ jobs:
           options: --platform linux/${{ matrix.arch }} -v ${{ github.workspace }}:/work
           run: |
             apk update
-            apk add --no-cache build-base perl perl-dev py3-setuptools openssl-dev \
-              libffi-dev autoconf automake libtool m4 python3-dev linux-headers git
-            
+            apk add --no-cache \
+              build-base \
+              perl \
+              perl-dev \
+              py3-setuptools \
+              openssh \
+              openssl-dev \
+              libffi-dev \
+              nmap \
+              nmap-scripts \
+              wget \
+              libc-utils \
+              autoconf \
+              automake \
+              python3-dev \
+              linux-headers
+              
             cd /work
-            # Fix for Net-SNMP source generation
-            autoreconf -ivf 
-            
-            ./configure --with-defaults --with-python-modules --libdir=/usr/lib \
-                        --enable-shared --enable-blumenthal-aes
-            
+            ./configure --with-python-modules --libdir=/usr/lib --enable-shared --enable-blumenthal-aes
             make -j$(nproc)
             make DESTDIR=$(pwd)/.dist/${{ matrix.arch }} install
-            
             cd python
             python3 setup.py install --root=$(pwd)/../.dist/${{ matrix.arch }} --prefix=/usr/local
 
+      - name: Archive Binaries
+        run: |
+          cd .dist/${{ matrix.arch }}
+          tar -cvf ../../net-snmp-${{ matrix.arch }}.tar .
+          
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: binaries-${{ matrix.arch }}
-          path: .dist/${{ matrix.arch }}/
+          path: net-snmp-${{ matrix.arch }}.tar
 
   commit-all:
     needs: build-binaries
@@ -63,6 +76,15 @@ jobs:
           path: .dist/
           pattern: binaries-*
           merge-multiple: true
+
+      - name: Extract and Organize
+        run: |
+          mkdir -p .dist/amd64 .dist/arm64
+          
+          tar -xvf .temp_artifacts/net-snmp-amd64.tar -C .dist/amd64/
+          tar -xvf .temp_artifacts/net-snmp-arm64.tar -C .dist/arm64/
+          
+          rm -rf .temp_artifacts/
 
       - name: Commit and Push
         run: |
