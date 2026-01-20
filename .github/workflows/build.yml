@@ -3,10 +3,11 @@ on:
     branches: [master]
 
 jobs:
-  build-and-commit-amd-platform:
+  build-binaries:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    strategy:
+      matrix:
+        arch: [amd64, arm64]
     steps:
       - name: Checkout net-snmp
         uses: actions/checkout@v4
@@ -18,111 +19,62 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
-      - name: Build in Alpine AMD64
+      - name: Build in Alpine ${{ matrix.arch }}
         uses: addnab/docker-run-action@v3
         with:
           image: node:24.3.0-alpine
-          options: --platform linux/amd64 -v ${{ github.workspace }}:/work
+          options: --platform linux/${{ matrix.arch }} -v ${{ github.workspace }}:/work
           run: |
             apk update
-            apk add --no-cache \
-              build-base \
-              perl \
-              perl-dev \
-              py3-setuptools \
-              openssh \
-              openssl-dev \
-              libffi-dev \
-              nmap \
-              nmap-scripts \
-              wget \
-              libc-utils \
-              autoconf \
-              automake \
-              python3-dev \
-              linux-headers
-              
+            apk add --no-cache build-base perl perl-dev py3-setuptools openssl-dev \
+              libffi-dev autoconf automake libtool m4 python3-dev linux-headers git
+            
             cd /work
-            ./configure --with-python-modules --libdir=/usr/lib --enable-shared --enable-blumenthal-aes
+            # Fix for Net-SNMP source generation
+            autoreconf -ivf 
+            
+            ./configure --with-defaults --with-python-modules --libdir=/usr/lib \
+                        --enable-shared --enable-blumenthal-aes
+            
             make -j$(nproc)
-            make DESTDIR=$(pwd)/.dist/amd64 install
+            make DESTDIR=$(pwd)/.dist/${{ matrix.arch }} install
+            
             cd python
-            python3 setup.py install --root=$(pwd)/../.dist/amd64 --prefix=/usr/local
-      
-      - name: Commit and Push
-        run: |
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
-          
-          # Force add .dist in case it's ignored
-          git add -f .dist/
-          
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "chore: build arm64 alpine binaries [skip ci]"
-            git push origin master
-          fi
+            python3 setup.py install --root=$(pwd)/../.dist/${{ matrix.arch }} --prefix=/usr/local
 
-  build-and-commit-arm-platform:
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: binaries-${{ matrix.arch }}
+          path: .dist/${{ matrix.arch }}/
+
+  commit-all:
+    needs: build-binaries
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
-      - name: Checkout net-snmp
+      - name: Checkout
         uses: actions/checkout@v4
+        
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
         with:
-          repository: TapLane/net-snmp
-          token: ${{ secrets.GITHUB_TOKEN }}
-          fetch-depth: 0
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      - name: Build in Alpine ARM64
-        uses: addnab/docker-run-action@v3
-        with:
-          image: node:24.3.0-alpine
-          options: --platform linux/arm64 -v ${{ github.workspace }}:/work
-          run: |
-            apk update
-            apk add --no-cache \
-              build-base \
-              perl \
-              perl-dev \
-              py3-setuptools \
-              openssh \
-              openssl-dev \
-              libffi-dev \
-              nmap \
-              nmap-scripts \
-              wget \
-              libc-utils \
-              autoconf \
-              automake \
-              python3-dev \
-              linux-headers
-              
-            cd /work
-            ./configure --with-python-modules --libdir=/usr/lib --enable-shared --enable-blumenthal-aes
-            make -j$(nproc)
-            make DESTDIR=$(pwd)/.dist/arm64 install
-            cd python
-            python3 setup.py install --root=$(pwd)/../.dist/arm64 --prefix=/usr/local
+          path: .dist/
+          pattern: binaries-*
+          merge-multiple: true
 
       - name: Commit and Push
         run: |
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
           
-          # Force add .dist in case it's ignored
+          # This adds both .dist/amd64 and .dist/arm64
           git add -f .dist/
           
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "chore: build arm64 alpine binaries [skip ci]"
+            git commit -m "chore: build multi-arch binaries [skip ci]"
             git push origin master
           fi
