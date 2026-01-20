@@ -75,7 +75,6 @@ jobs:
         with:
           path: .temp_artifacts/
           pattern: binaries-*
-          merge-multiple: true
 
       - name: Extract and Organize
         run: |
