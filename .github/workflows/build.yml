@@ -22,23 +22,27 @@ jobs:
         uses: addnab/docker-run-action@v3
         with:
           image: node:24.3.0-alpine
-          options: --platform linux/arm64 -v ${{ github.workspace }}:/work
+          options: -v ${{ github.workspace }}:/work
           run: |
             apk update
-            apk add --no-cache git build-base perl-dev openssl-dev \
-              python3-dev py3-setuptools linux-headers autoconf automake libtool
-            
+            apk add --no-cache \
+              build-base \
+              perl \
+              perl-dev \
+              py3-setuptools \
+              openssh \
+              openssl-dev \
+              libffi-dev \
+              nmap \
+              nmap-scripts \
+              wget \
+              libc-utils \
+              autoconf \
+              automake \
+              python3-dev \
+              linux-headers
+              
             cd /work
-            
-            chmod +x ./autogen.sh || true
-            chmod +x ./configure || true
-
-            if [ -f "./autogen.sh" ]; then
-                ./autogen.sh
-            else
-                autoreconf -ivf
-            fi
-            
             ./configure --with-python-modules --libdir=/usr/lib --enable-shared --enable-blumenthal-aes
             make -j$(nproc)
             make DESTDIR=$(pwd)/.dist install
