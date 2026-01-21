@@ -1,0 +1,22 @@
+=head2 Tue Jan 20 22:00:59 2026: C<Module> L<Bundle::NetSNMP|Bundle::NetSNMP>
+
+=over 4
+
+=item *
+
+C<installed into: /usr/local/share/perl5/site_perl>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: >
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
