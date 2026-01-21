@@ -43,6 +43,9 @@ jobs:
               python3-dev \
               linux-headers
               
+            export OPENSSL_NO_ASM=1
+            export CFLAGS="-O2 -fno-omit-frame-pointer"
+
             cd /work
             ./configure --with-python-modules --libdir=/usr/lib --enable-shared --enable-blumenthal-aes
             make -j$(nproc)
