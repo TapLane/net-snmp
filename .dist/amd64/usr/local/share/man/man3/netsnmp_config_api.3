@@ -295,7 +295,7 @@ for one particular machine.
 .PP
 The default list of directories to search is \fC /usr/local/etc/snmp\fP,
 followed by \fC /usr/local/share/snmp\fP,
-followed by \fC /usr/lib/snmp\fP,
+followed by \fC /usr/local/lib/snmp\fP,
 followed by \fC $HOME/.snmp\fP.
 This list can be changed by setting the environmental variable
 .I SNMPCONFPATH
@@ -367,7 +367,7 @@ A colon-separated list of directories to search for configuration
 files in.
 Default:
 .br
-/usr/local/etc/snmp:\:/usr/local/share/snmp:\:/usr/lib/snmp:\:$HOME/.snmp
+/usr/local/etc/snmp:\:/usr/local/share/snmp:\:/usr/local/lib/snmp:\:$HOME/.snmp
 .SH "SEE ALSO"
 netsnmp_mib_api(3), snmp_api(3)
 .\" Local Variables:
