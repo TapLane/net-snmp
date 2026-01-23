@@ -1634,7 +1634,7 @@
 /* #undef NETSNMP_CAN_USE_SYSCTL */
 
 /* configure options specified */
-#define NETSNMP_CONFIGURE_OPTIONS " '--with-python-modules' '--libdir=/usr/lib' '--enable-shared' '--enable-blumenthal-aes'"
+#define NETSNMP_CONFIGURE_OPTIONS " '--with-python-modules' '--libdir=/usr/lib' '--enable-shared' '--enable-blumenthal-aes' 'CFLAGS=-O2 -fno-omit-frame-pointer'"
 
 /* if defined daemons will use syslog when no log destination is defined */
 /* #undef NETSNMP_DAEMONS_DEFAULT_LOG_SYSLOG */
