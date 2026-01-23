@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        arch: [amd64, arm64]
+        arch: [amd64]
     steps:
       - name: Checkout net-snmp
         uses: actions/checkout@v4
@@ -47,7 +47,7 @@ jobs:
             export CFLAGS="-O2 -fno-omit-frame-pointer"
 
             cd /work
-            ./configure --with-python-modules --libdir=/usr/lib --enable-shared --enable-blumenthal-aes
+            ./configure --with-defaults --with-python-modules --libdir=/usr/local/lib --enable-shared --enable-blumenthal-aes
             make -j$(nproc)
             make DESTDIR=$(pwd)/.dist/${{ matrix.arch }} install
             cd python
@@ -81,13 +81,11 @@ jobs:
 
       - name: Extract and Organize
         run: |
-          mkdir -p .dist/amd64 .dist/arm64
+          mkdir -p .dist/amd64
           
           AMD_TAR=$(find .temp_artifacts -name "net-snmp-amd64.tar")
-          ARM_TAR=$(find .temp_artifacts -name "net-snmp-arm64.tar")
           
           tar -xvf "$AMD_TAR" -C .dist/amd64/
-          tar -xvf "$ARM_TAR" -C .dist/arm64/
           
           rm -rf .temp_artifacts/
 
