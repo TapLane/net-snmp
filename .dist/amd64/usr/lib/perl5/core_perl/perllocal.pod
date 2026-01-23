@@ -42,3 +42,25 @@ C<EXE_FILES: >
 
 =back
 
+=head2 Fri Jan 23 19:00:46 2026: C<Module> L<Bundle::NetSNMP|Bundle::NetSNMP>
+
+=over 4
+
+=item *
+
+C<installed into: /usr/local/share/perl5/site_perl>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: >
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+

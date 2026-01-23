@@ -1634,7 +1634,7 @@
 /* #undef NETSNMP_CAN_USE_SYSCTL */
 
 /* configure options specified */
-#define NETSNMP_CONFIGURE_OPTIONS " '--with-python-modules' '--libdir=/usr/lib' '--enable-shared' '--enable-blumenthal-aes' 'CFLAGS=-O2 -fno-omit-frame-pointer'"
+#define NETSNMP_CONFIGURE_OPTIONS " '--with-defaults' '--with-python-modules' '--libdir=/usr/local/lib' '--enable-shared' '--enable-blumenthal-aes' 'CFLAGS=-O2 -fno-omit-frame-pointer'"
 
 /* if defined daemons will use syslog when no log destination is defined */
 /* #undef NETSNMP_DAEMONS_DEFAULT_LOG_SYSLOG */
@@ -2025,10 +2025,10 @@
 /* #undef NETSNMP_DEFAULT_CLIENT_RECV_BUF */
 
 /* net-snmp's major path names */
-#define SNMPLIBPATH "/usr/lib/snmp"
+#define SNMPLIBPATH "/usr/local/lib/snmp"
 #define SNMPSHAREPATH "/usr/local/share/snmp"
 #define SNMPCONFPATH "/usr/local/etc/snmp"
-#define SNMPDLMODPATH "/usr/lib/snmp/dlmod"
+#define SNMPDLMODPATH "/usr/local/lib/snmp/dlmod"
 
 /* NETSNMP_LOGFILE:  If defined it closes stdout/err/in and opens this in 
    out/err's place.  (stdin is closed so that sh scripts won't wait for it) */
